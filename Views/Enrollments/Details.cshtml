@@ -1,0 +1,65 @@
+﻿@model RSWEBproekt.Models.Enrollment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Enrollment</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Student.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Course.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Grade)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Grade)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EnrolledOn)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EnrolledOn)
+        </dd>
+        @if (!string.IsNullOrEmpty(Model.DocumentPath))
+        {
+            <dt class="col-sm-2">
+                Attached Document
+            </dt>
+            <dd class="col-sm-10">
+                <span class="text-success">✔ Document uploaded</span>
+                <br />
+                <a href="@Model.DocumentPath" target="_blank">
+                    Download / View document
+                </a>
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">
+                Attached Document
+            </dt>
+            <dd class="col-sm-10">
+                <span class="text-danger">✖ No document uploaded</span>
+            </dd>
+        }
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

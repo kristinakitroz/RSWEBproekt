@@ -1,0 +1,47 @@
+﻿@model RSWEBproekt.Models.Teacher
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h2>Courses taught by @Model.FirstName @Model.LastName</h2>
+
+@if ((Model.FirstTeacherCourses == null || !Model.FirstTeacherCourses.Any()) &&
+     (Model.SecondTeacherCourses == null || !Model.SecondTeacherCourses.Any()))
+{
+    <p>No courses assigned.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Semester</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.FirstTeacherCourses ?? Enumerable.Empty<RSWEBproekt.Models.Course>())
+            {
+                <tr>
+                    <td>@c.Title</td>
+                    <td>@c.Semester</td>
+                    <td>First Teacher</td>
+                </tr>
+            }
+            @foreach (var c in Model.SecondTeacherCourses ?? Enumerable.Empty<RSWEBproekt.Models.Course>())
+            {
+                <tr>
+                    <td>@c.Title</td>
+                    <td>@c.Semester</td>
+                    <td>Second Teacher</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div>
+    <a asp-action="Index">Back to Teachers</a>
+</div>

@@ -1,0 +1,40 @@
+﻿@model RSWEBproekt.Models.Course
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<h2>Students enrolled in @Model.Title</h2>
+
+@if (Model.Enrollments == null || !Model.Enrollments.Any())
+{
+    <p>No students enrolled.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var enrollment in Model.Enrollments)
+            {
+                <tr>
+                    <td>@enrollment.Student?.Index</td>
+                    <td>@enrollment.Student?.FirstName</td>
+                    <td>@enrollment.Student?.LastName</td>
+                    <td>@enrollment.Grade</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div>
+    <a asp-action="Index">Back to Courses</a>
+</div>
