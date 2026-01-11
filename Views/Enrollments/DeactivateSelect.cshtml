@@ -1,0 +1,29 @@
+﻿@model RSWEBproekt.Models.ViewModels.EnrollmentDeactivateSelectVM
+
+@{
+    ViewData["Title"] = "Deactivate - Select Course";
+}
+
+<h2>Deactivate (Unenroll) - Select course</h2>
+<hr />
+
+<form asp-action="DeactivateSelect" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="CourseId" class="form-label"></label>
+        <select asp-for="CourseId" class="form-select" asp-items="Model.Courses">
+            <option value="">-- Select Course --</option>
+        </select>
+        <span asp-validation-for="CourseId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Next</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Back</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

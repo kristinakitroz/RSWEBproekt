@@ -1,64 +1,79 @@
-﻿@model RSWEBproekt.Models.Enrollment
+﻿@model RSWEBproekt.Models.ViewModels.EnrollmentCreateViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Enrollment";
 }
 
-<h1>Create</h1>
-
-<h4>Enrollment</h4>
+<h1>Create Enrollment</h1>
+<h4>Enroll multiple students to one course</h4>
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" >
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-8">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="StudentId" class="control-label"></label>
-                <select asp-for="StudentId" class="form-control"
-                        asp-items="ViewBag.StudentId">
-                    <option value="">-- Select Student --</option>
-                </select>
-                <span asp-validation-for="StudentId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
+            <!-- COURSE -->
+            <div class="form-group mb-3">
                 <label asp-for="CourseId" class="control-label"></label>
-                <select asp-for="CourseId" class="form-control"
-                        asp-items="ViewBag.CourseId">
+                <select asp-for="CourseId" class="form-control" asp-items="Model.Courses">
                     <option value="">-- Select Course --</option>
                 </select>
                 <span asp-validation-for="CourseId" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="Grade" class="control-label"></label>
-                <input asp-for="Grade" class="form-control" />
-                <span asp-validation-for="Grade" class="text-danger"></span>
+            <div class="form-group mb-3">
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
+                <label asp-for="Semester" class="control-label"></label>
+                <select asp-for="Semester" class="form-control"
+                        asp-items="Html.GetEnumSelectList<RSWEBproekt.Models.Semester>()">
+                </select>
+                <span asp-validation-for="Semester" class="text-danger"></span>
+            </div>
+
+
+            <!-- STUDENTS CHECKBOXES -->
+            <div class="form-group mb-3">
+                <label class="control-label">Students</label>
+
+                <div class="border rounded p-2" style="max-height: 320px; overflow-y: auto;">
+                    @for (int i = 0; i < Model.Students.Count; i++)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   asp-for="Students[i].IsSelected" />
+
+                            <label class="form-check-label">
+                                @Model.Students[i].DisplayName
+                            </label>
+
+                            
+                            <input type="hidden" asp-for="Students[i].Id" />
+                            <input type="hidden" asp-for="Students[i].DisplayName" />
+                        </div>
+                    }
+                </div>
+
+                <span class="text-muted">Select one or more students.</span>
+            </div>
+
+            <!-- ENROLLED DATE -->
+            <div class="form-group mb-3">
                 <label asp-for="EnrolledOn" class="control-label"></label>
                 <input asp-for="EnrolledOn" class="form-control" type="date" />
                 <span asp-validation-for="EnrolledOn" class="text-danger"></span>
             </div>
 
-            <!-- DOCUMENT UPLOAD -->
-            <!--<div class="form-group">
-                <label>Project paper (PDF / DOC / DOCX)</label>
-                <input type="file" name="DocumentFile" class="form-control" />
-            </div>-->
-
-            <div class="form-group mt-2">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div class="mt-2">
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -31,6 +31,10 @@ namespace RSWEBproekt.Models
         public ICollection<Enrollment>? Enrollments { get; set; }
 
         public string? ImagePath { get; set; }
+        public string? PendingResetLink { get; set; }
+        public DateTime? ResetLinkCreatedOn { get; set; }
+
+
 
     }
 }

@@ -1,0 +1,121 @@
+﻿@model RSWEBproekt.Models.ViewModels.StudentEditEnrollmentLinksVM
+
+@{
+    ViewData["Title"] = "Edit Enrollment Links";
+}
+
+<h2>Edit Enrollment Links</h2>
+
+<hr />
+
+<div class="mb-3">
+    <strong>Course:</strong> @Model.CourseTitle <br />
+    <strong>Year:</strong> @Model.Year <br />
+    <strong>Semester:</strong> @Model.Semester
+</div>
+
+<form asp-action="EditEnrollmentLinks"
+      asp-controller="Student"
+      method="post"
+      enctype="multipart/form-data">
+
+    <input type="hidden" asp-for="EnrollmentId" />
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    
+    <!-- READ-ONLY INFORMACII -->
+  
+    <fieldset disabled>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Points</label>
+                <input class="form-control"
+                       value="@(Model.Points?.ToString() ?? "-")" />
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Grade</label>
+                <input class="form-control"
+                       value="@(Model.Grade?.ToString() ?? "-")" />
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Status</label>
+                <input class="form-control"
+                       value="@(Model.PassedOn == null ? "Active" : "Passed")" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Enrolled On</label>
+                <input class="form-control"
+                       value="@(Model.EnrolledOn?.ToString("dd.MM.yyyy") ?? "-")" />
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Passed On</label>
+                <input class="form-control"
+                       value="@(Model.PassedOn?.ToString("dd.MM.yyyy") ?? "-")" />
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">End Date</label>
+                <input class="form-control"
+                       value="@(Model.EndDate?.ToString("dd.MM.yyyy") ?? "-")" />
+            </div>
+        </div>
+    </fieldset>
+
+    <hr />
+
+    
+    <!-- STUDENT EDITABLE DEL -->
+ 
+
+    <div class="mb-3">
+        <label asp-for="ProjectUrl" class="form-label">
+            GitHub Repository URL
+        </label>
+        <input asp-for="ProjectUrl" class="form-control"
+               placeholder="https://github.com/username/project" />
+        <span asp-validation-for="ProjectUrl" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            Project / Seminar Paper (PDF / DOC / DOCX)
+        </label>
+
+        @if (!string.IsNullOrWhiteSpace(Model.DocumentPath))
+        {
+            <div class="mb-2">
+                <a href="@Model.DocumentPath" target="_blank">
+                    View current document
+                </a>
+            </div>
+        }
+
+        <input asp-for="DocumentFile" type="file" class="form-control" />
+        <span asp-validation-for="DocumentFile" class="text-danger"></span>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">
+            Save
+        </button>
+
+        <a asp-action="MyEnrolledCourses"
+           asp-controller="Student"
+           class="btn btn-secondary ms-2">
+            Cancel
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

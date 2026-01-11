@@ -1,0 +1,59 @@
+﻿@model RSWEBproekt.Models.ViewModels.ProfessorUpdateEnrollmentVM
+
+<h2>Edit Enrollment</h2>
+<hr />
+
+<div class="mb-2"><strong>Course:</strong> @Model.CourseTitle</div>
+<div class="mb-3"><strong>Student:</strong> @Model.StudentName</div>
+
+<form asp-action="EditEnrollment" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input type="hidden" asp-for="EnrollmentId" />
+    <input type="hidden" asp-for="CourseId" />
+    <input type="hidden" asp-for="Year" />
+
+    <div class="mb-3">
+        <label asp-for="Points" class="form-label"></label>
+        <input asp-for="Points" class="form-control" />
+        <span asp-validation-for="Points" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Grade" class="form-label"></label>
+        <input asp-for="Grade" class="form-control" />
+        <span asp-validation-for="Grade" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PassedOn" class="form-label"></label>
+        <input asp-for="PassedOn" type="date" class="form-control" />
+        <span asp-validation-for="PassedOn" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Document (read-only)</label>
+        @if (!string.IsNullOrEmpty(Model.DocumentPath))
+        {
+            <div><a href="@Model.DocumentPath" target="_blank">Open document</a></div>
+        }
+        else
+        {
+            <div class="text-muted">No document</div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="CourseStudents"
+       asp-route-courseId="@Model.CourseId"
+       asp-route-year="@Model.Year"
+       class="btn btn-secondary ms-2">
+        Back
+    </a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

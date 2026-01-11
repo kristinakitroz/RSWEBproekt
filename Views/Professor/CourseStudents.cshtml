@@ -1,0 +1,78 @@
+﻿@model RSWEBproekt.Models.ViewModels.ProfessorCourseStudentsVM
+
+<h2>@Model.CourseTitle</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-warning">@TempData["Message"]</div>
+}
+
+<form method="get" class="mb-3">
+    <input type="hidden" name="courseId" value="@Model.CourseId" />
+    <label class="form-label">Year</label>
+    <select name="year" class="form-select" style="max-width: 200px;" onchange="this.form.submit()">
+        @foreach (var y in Model.Years)
+        {
+            <option value="@y" selected="@(y == Model.SelectedYear)">@y</option>
+        }
+    </select>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Status</th>
+            <th>Points</th>
+            <th>Grade</th>
+            <th>Passed On</th>
+            <th>Document</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model.Enrollments)
+        {
+            <tr>
+                <td>@e.StudentName (@e.StudentIndex)</td>
+                <td>
+                    @if (e.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </td>
+                <td>@(e.Points?.ToString() ?? "-")</td>
+                <td>@(e.Grade?.ToString() ?? "-")</td>
+                <td>@(e.PassedOn?.ToString("yyyy-MM-dd") ?? "-")</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(e.DocumentPath))
+                    {
+                        <a href="@e.DocumentPath" target="_blank">Open</a>
+                    }
+                    else
+                    {
+
+                        <span>-</span>
+                    }
+                </td>
+                <td>
+                    @if (e.IsActive)
+                    {
+                        <a class="btn btn-sm btn-outline-primary"
+                           asp-action="EditEnrollment"
+                           asp-route-id="@e.EnrollmentId">
+                            Edit
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="MyCourses" class="btn btn-secondary">Back</a>

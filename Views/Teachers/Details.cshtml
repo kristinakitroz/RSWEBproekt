@@ -4,61 +4,98 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Teacher Details</h1>
 
-<div>
-    <h4>Teacher</h4>
-    
-    <hr />
+<hr />
 
-    <!--Prikazi ja slikata-->
-    @if (!string.IsNullOrEmpty(Model.ImagePath))
-    {
-        <div class="mb-3">
-            <img src="@Model.ImagePath" alt="Teacher Image" width="200" />
+@if (!string.IsNullOrEmpty(Model.ImagePath))
+{
+    <div class="mb-3">
+        <img src="@Model.ImagePath" alt="Teacher Image" width="200" />
+    </div>
+}
+
+<dl class="row">
+    <dt class="col-sm-2">First name</dt>
+    <dd class="col-sm-10">@Model.FirstName</dd>
+
+    <dt class="col-sm-2">Last name</dt>
+    <dd class="col-sm-10">@Model.LastName</dd>
+
+    <dt class="col-sm-2">Degree</dt>
+    <dd class="col-sm-10">@Model.Degree</dd>
+
+    <dt class="col-sm-2">Academic rank</dt>
+    <dd class="col-sm-10">@Model.AcademicRank</dd>
+
+    <dt class="col-sm-2">Office number</dt>
+    <dd class="col-sm-10">@Model.OfficeNumber</dd>
+
+    <dt class="col-sm-2">Hire date</dt>
+    <dd class="col-sm-10">@Model.HireDate</dd>
+</dl>
+
+<hr />
+
+<div class="mb-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Back to list</a>
+</div>
+
+<!-- ================= ACCOUNT DEL ================= -->
+@if (!string.IsNullOrEmpty(Model.PendingResetLink))
+{
+    <!--  Reset link POSTOI -->
+    <div class="alert alert-warning">
+        <strong>Professor account created.</strong><br />
+        Send this link to professor to set password:
+        <div class="input-group mt-2">
+            <input type="text"
+                   class="form-control"
+                   id="resetLink"
+                   value="@Model.PendingResetLink"
+                   readonly />
+            <button class="btn btn-outline-secondary"
+                    type="button"
+                    onclick="copyResetLink()">
+                Copy
+            </button>
         </div>
-    }
 
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Degree)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Degree)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AcademicRank)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AcademicRank)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OfficeNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OfficeNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HireDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HireDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+        @if (Model.ResetLinkCreatedOn != null)
+        {
+            <small class="text-muted">
+                Generated on: @Model.ResetLinkCreatedOn.Value.ToString("dd.MM.yyyy HH:mm")
+            </small>
+        }
+    </div>
+}
+else if (ViewBag.HasAccount ?? false)
+{
+    <!--  Account e aktiviran -->
+    <div class="alert alert-success">
+        This professor has an active account.
+    </div>
+}
+else
+{
+    <!--  NEMA account -->
+    <a class="btn btn-success"
+       asp-action="CreateAccount"
+       asp-route-id="@Model.Id">
+        Create Professor Account
+    </a>
+}
+
+@section Scripts {
+    <script>
+        function copyResetLink() {
+            const input = document.getElementById("resetLink");
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value);
+
+            alert("Reset link copied to clipboard");
+        }
+    </script>
+}

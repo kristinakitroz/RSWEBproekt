@@ -1,53 +1,65 @@
 ﻿@model IEnumerable<RSWEBproekt.Models.Enrollment>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Enrollments";
 }
 
-<h1>Index</h1>
+<h1>Enrollments</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
+<a asp-action="DeactivateSelect" class="btn btn-danger ms-2">Deactivate (Unenroll)</a>
+
+
+<table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Student)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Course)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Grade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EnrolledOn)
-            </th>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Semester</th>
+            <th>Status</th>
+            <th>Grade</th>
+            <th>Enrolled On</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Student.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EnrolledOn)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Student?.FirstName
+                </td>
+                <td>
+                    @item.Course?.Title
+                </td>
+                <td>
+                    @item.Year
+                </td>
+                <td>
+                    @item.Semester
+                </td>
+                <td>
+                    @(item.EndDate == null ? "Active" : "Inactive")
+                </td>
+                <td>
+                    @(item.Grade.HasValue? item.Grade.ToString() : "—")
+                </td>
+                <td>
+                    @item.EnrolledOn?.ToString("dd.MM.yyyy")
+                </td>
+                <td>
+                    @if (item.EndDate == null)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <span> | </span>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

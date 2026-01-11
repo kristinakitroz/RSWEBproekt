@@ -1,0 +1,85 @@
+﻿@model List<RSWEBproekt.Models.ViewModels.StudentEnrollmentRowVM>
+
+@{
+    ViewData["Title"] = "My Enrolled Courses";
+}
+
+<h2>My Enrolled Courses</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">@TempData["Message"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Semester</th>
+            <th>Status</th>
+            <th>Points</th>
+            <th>Grade</th>
+            <th>Document</th>
+            <th>Project</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.CourseTitle</td>
+                <td>@e.Year</td>
+                <td>@e.Semester</td>
+
+                <td>
+                    @if (e.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </td>
+
+                <td>@(e.Points?.ToString() ?? "-")</td>
+                <td>@(e.Grade?.ToString() ?? "-")</td>
+
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(e.DocumentPath))
+                    {
+                        <a href="@e.DocumentPath" target="_blank">Open</a>
+                    }
+                    else
+                    {
+
+                        <span>-</span>
+                    }
+                </td>
+
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(e.ProjectUrl))
+                    {
+                        <a href="@e.ProjectUrl" target="_blank">GitHub</a>
+                    }
+                    else
+                    {
+
+                        <span>-</span>
+                    }
+                </td>
+
+                <td>
+                    <a class="btn btn-sm btn-primary"
+                       asp-controller="Student"
+                       asp-action="EditEnrollmentLinks"
+                       asp-route-id="@e.EnrollmentId">
+                        Edit links
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

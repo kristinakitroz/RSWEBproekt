@@ -20,3 +20,38 @@ html {
 body {
   margin-bottom: 60px;
 }
+.btn-students {
+    background-color: #aee9bc;
+    color: white;
+}
+
+.btn-teachers {
+    background-color: #aee9bc;
+    color: white;
+}
+
+.btn-enrollments {
+    background-color: #aee9bc;
+    color: white;
+}
+.btn-courses {
+    background-color: #aee9bc;
+    color: white;
+}
+.btn-professor {
+    background-color: #69cede; 
+    color: white;
+}
+.btn-student {
+    background-color: #69cede; 
+    color: white;
+}
+    
+    .btn-students:hover,
+    .btn-teachers:hover,
+    .btn-enrollments:hover,
+    .btn-courses:hover,
+    .btn-professor:hover,
+    .btn-student:hover {
+        opacity: 0.85;
+    }

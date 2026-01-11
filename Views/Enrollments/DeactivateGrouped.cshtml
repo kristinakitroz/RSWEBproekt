@@ -1,0 +1,64 @@
+﻿@model RSWEBproekt.Models.ViewModels.EnrollmentDeactivateGroupedVM
+
+@{
+    ViewData["Title"] = "Deactivate Enrollments";
+}
+
+<h2>Deactivate (Unenroll) Students</h2>
+<p class="text-muted">Course: <strong>@Model.CourseTitle</strong></p>
+<hr />
+
+<form asp-action="DeactivateGrouped" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input type="hidden" asp-for="CourseId" />
+
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    @if (Model.Groups.Count == 0)
+    {
+        <div class="alert alert-info">
+            No active students found for this course.
+        </div>
+    }
+    else
+    {
+        @for (int g = 0; g < Model.Groups.Count; g++)
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>@Model.Groups[g].Year</strong> - <strong>@Model.Groups[g].Semester</strong>
+                </div>
+
+                <div class="card-body">
+                    @for (int i = 0; i < Model.Groups[g].Items.Count; i++)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   asp-for="Groups[g].Items[i].IsSelected" />
+                            <label class="form-check-label">
+                                @Model.Groups[g].Items[i].StudentName
+                            </label>
+
+                            <input type="hidden" asp-for="Groups[g].Items[i].EnrollmentId" />
+                            <input type="hidden" asp-for="Groups[g].Items[i].StudentName" />
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+
+    <button type="submit" class="btn btn-danger">Deactivate selected</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Back to list</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

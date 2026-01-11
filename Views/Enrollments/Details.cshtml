@@ -22,6 +22,14 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Course.Title)
         </dd>
+        <dt class="col-sm-2">Year</dt>
+        <dd class="col-sm-10">@Model.Year</dd>
+
+        <dt class="col-sm-2">Semester</dt>
+        <dd class="col-sm-10">@Model.Semester</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@(Model.EndDate == null ? "Active" : "Inactive")</dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Grade)
         </dt>
@@ -34,6 +42,11 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EnrolledOn)
         </dd>
+        <dt class="col-sm-2">Unenrolled On</dt>
+        <dd class="col-sm-10">
+            @(Model.EndDate.HasValue? Model.EndDate.Value.ToString("dd.MM.yyyy") : "—")
+        </dd>
+
         @if (!string.IsNullOrEmpty(Model.DocumentPath))
         {
             <dt class="col-sm-2">

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<RSWEBproekt.Models.ViewModels.ProfessorCourseVM>
+
+<h2>My Courses</h2>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Credits</th>
+            <th>Semester</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Title</td>
+                <td>@c.Credits</td>
+                <td>@c.Semester</td>
+                <td>
+                    <a class="btn btn-sm btn-primary"
+                       asp-action="CourseStudents"
+                       asp-route-courseId="@c.CourseId">
+                        Students
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -38,5 +38,9 @@ namespace RSWEBproekt.Models
 
         public string? ImagePath { get; set; }
 
+        public string? PendingResetLink { get; set; }   // reset link za profesorot (se brise otkako ke si postavi password)
+        public DateTime? ResetLinkCreatedOn { get; set; }
+
+
     }
 }

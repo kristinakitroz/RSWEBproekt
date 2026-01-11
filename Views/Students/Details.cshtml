@@ -2,14 +2,16 @@
 
 @{
     ViewData["Title"] = "Details";
+    bool hasAccount = ViewBag.HasAccount ?? false;
+    bool hasPassword = ViewBag.HasPassword ?? false;
 }
 
 <h1>Details</h1>
 
 <div>
     <h4>Student</h4>
-
     <hr />
+
     @if (!string.IsNullOrEmpty(Model.ImagePath))
     {
         <div class="mb-3">
@@ -18,45 +20,99 @@
     }
 
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Index)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Index)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EnrollmentYear)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EnrollmentYear)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CurrentSemester)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CurrentSemester)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LevelOfEducation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LevelOfEducation)
-        </dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Index)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Index)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.FirstName)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.FirstName)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LastName)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.LastName)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EnrollmentYear)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.EnrollmentYear)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CurrentSemester)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.CurrentSemester)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfEducation)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfEducation)</dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
+
+<hr />
+
+<!-- STUDENT ACCOUNT DEL -->
+
+@if (hasPassword)
+{
+    <div class="alert alert-success mt-3">
+        This student has an active account.
+    </div>
+}
+else
+{
+   
+    <!--nema pass ili nema acc ili e kreiran i ceka setup-->
+
+    @if (!hasAccount)
+    {
+        <div class="mt-3">
+            <a class="btn btn-success"
+               asp-action="CreateAccount"
+               asp-route-id="@Model.Id">
+                Create Student Account
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info mt-3">
+            Account created, waiting for student to set password.
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.PendingResetLink))
+    {
+        <div class="alert alert-warning mt-3">
+            <h5 class="mb-2">Reset link</h5>
+            <div>Send this link to student to set password:</div>
+
+            <div class="input-group mt-2">
+                <input id="resetLink"
+                       class="form-control"
+                       value="@Model.PendingResetLink"
+                       readonly />
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        onclick="copyResetLink()">
+                    Copy
+                </button>
+            </div>
+
+            <div class="mt-2 small text-muted">
+                Generated on: @(Model.ResetLinkCreatedOn?.ToString("dd.MM.yyyy HH:mm") ?? "")
+            </div>
+        </div>
+
+        <script>
+            function copyResetLink() {
+                const el = document.getElementById('resetLink');
+                el.select();
+                el.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+            }
+        </script>
+    }
+    else if (hasAccount)
+    {
+        <div class="alert alert-danger mt-3">
+            Account exists but PendingResetLink is empty. Recreate the account link (or check CreateAccount saving).
+        </div>
+    }
+}

@@ -1,11 +1,13 @@
 ﻿//ovoj fajl e mostot megju c# kodot i bazata na podatoci
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RSWEBproekt.Models;
 
 namespace RSWEBproekt.Data
 {
     //so ova kazuvas ovaa klasa upravuva so baza na podatoci
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         //konstruktor , podesuvanja za konekcija so baza na podatoci
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
