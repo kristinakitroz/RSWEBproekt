@@ -2,47 +2,46 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="container mt-5 text-center">
-    <h1 class="mb-4">RSWEB Project</h1>
+<div class="home-background">
+    <div class="text-center">
+        <h1 class="heading">RSWEB</h1>
 
-    <div class="d-flex justify-content-center gap-3 flex-wrap">
-
-        <a asp-controller="Students" asp-action="Index"
-           class="btn btn-lg btn-students">
-            Students
-        </a>
-
-        <a asp-controller="Teachers" asp-action="Index"
-           class="btn btn-lg btn-teachers">
-            Teachers
-        </a>
-
-        <a asp-controller="Courses" asp-action="Index"
-           class="btn btn-lg btn-courses">
-            Courses
-        </a>
-
-        <a asp-controller="Enrollments" asp-action="Index"
-           class="btn btn-lg btn-enrollments">
-            Enrollments
-        </a>
-        @if (User.IsInRole("Professor"))
-        {
-            <a asp-controller="Professor" asp-action="MyCourses"
-               class="btn btn-lg btn-professor">
-                My Courses
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a asp-controller="Students" asp-action="Index"
+               class="btn btn-lg btn-students">
+                Students
             </a>
-        }
-        @*
-      
-        *@
-        @if (User.IsInRole("Student"))
-        {
-            <a asp-controller="Student" asp-action="MyEnrolledCourses"
-               class="btn btn-lg btn-student">
-                My Enrolled Courses
-            </a>
-        }
 
+            <a asp-controller="Teachers" asp-action="Index"
+               class="btn btn-lg btn-teachers">
+                Teachers
+            </a>
+
+            <a asp-controller="Courses" asp-action="Index"
+               class="btn btn-lg btn-courses">
+                Courses
+            </a>
+
+            <a asp-controller="Enrollments" asp-action="Index"
+               class="btn btn-lg btn-enrollments">
+                Enrollments
+            </a>
+
+            @if (User.IsInRole("Professor"))
+            {
+                <a asp-controller="Professor" asp-action="MyCourses"
+                   class="btn btn-lg btn-professor">
+                    My Courses
+                </a>
+            }
+
+            @if (User.IsInRole("Student"))
+            {
+                <a asp-controller="Student" asp-action="MyEnrolledCourses"
+                   class="btn btn-lg btn-student">
+                    My Enrolled Courses
+                </a>
+            }
+        </div>
     </div>
 </div>

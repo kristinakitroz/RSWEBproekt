@@ -9,9 +9,14 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RSWEBproekt.styles.css" asp-append-version="true" />
 </head>
-<body>
+
+@{
+        var isHome = (ViewData["Title"]?.ToString() == "Home");
+}
+
+<body class="@(isHome ? "home-body" : "")">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     RSWEBproekt
@@ -24,7 +29,7 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <!-- LEFT SIDE NAV -->
+                    
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
@@ -38,18 +43,30 @@
                         </li>
                     </ul>
 
-                    <!-- RIGHT SIDE LOGIN / LOGOUT -->
+                    
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
+    
+    @if (isHome)
+    {
+       
+        <main role="main" class="p-0 m-0">
             @RenderBody()
         </main>
-    </div>
+    }
+    else
+    {
+        
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
 
     <footer class="border-top footer text-muted">
         <div class="container">
